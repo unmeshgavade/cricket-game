@@ -1,45 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Book Cricket</title>
     <style>
-        body{
+        body {
             /* background: url('https://wallpapercave.com/wp/wp1809746.jpg') top left no-repeat; */
-            background: url('Griffin.png') top left no-repeat;
+            /* background: url('Griffin.png') top left no-repeat; */
             background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 98vh;
         }
-        .displayNumber{
-            width: 100px;
-            height: 100px;
-            background: rgba(210,255,82,1);
-            background: -moz-linear-gradient(left, rgba(210,255,82,1) 0%, rgba(145,232,66,1) 100%);
-            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(210,255,82,1)), color-stop(100%, rgba(145,232,66,1)));
-            background: -webkit-linear-gradient(left, rgba(210,255,82,1) 0%, rgba(145,232,66,1) 100%);
-            background: -o-linear-gradient(left, rgba(210,255,82,1) 0%, rgba(145,232,66,1) 100%);
-            background: -ms-linear-gradient(left, rgba(210,255,82,1) 0%, rgba(145,232,66,1) 100%);
-            background: linear-gradient(to right, rgba(210,255,82,1) 0%, rgba(145,232,66,1) 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#d2ff52', endColorstr='#91e842', GradientType=1 );
 
+        #wrapper {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            align-content: center;
+        }
+
+        .common-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .player-box {
+            width: 50px;
+            height: 50px;
+            background: yellow;
+            margin-bottom: 10px;
         }
     </style>
 </head>
+
 <body>
-    <h1>U vs A</h1> 
-    <div id="displayNumber" class="displayNumber"></div>
-    <button id="btn">Get a random number!</button>
+    <div id="wrapper">
+        <div class="common-col left">
+            <!-- <div class="player-box left-box">wef</div> -->
+            <div class="total-score left-total">ew</div>
+        </div>
+        <button id="btn">Click to score runs!</button>
+        <div class="common-col right">
+            <!-- <div class="player-box right-box">ew</div> -->
+            <div class="total-score right-total">wefwef</div>
+        </div>
+    </div>
 
     <script>
-        document.getElementById('btn').addEventListener('click', function(){
+        var numberOfPlayers = prompt('Enter number of players', 3);
+        var isLeft = true;
+
+        function checkNumbers(score) {
+            if (score == 0) {
+                return 0;
+            } else if (score == 1 || score == 5 || score == 9) {
+                return 1;
+            } else if (score == 2 || score == 7) {
+                return 2
+            } else if (score == 3 || score == 8) {
+                return 3;
+            } else if (score == 4) {
+                return 4;
+            } else return 6;
+        }
+
+        function trimScore(scoreNumber) {
+            var score = scoreNumber.toString().split('');
+            if (score.length < 2) {
+                return checkNumbers(Number(score[0]))
+            } else {
+                return checkNumbers(Number(score[1]))
+            }
+
+        }
+
+        for (let i = 0; i < numberOfPlayers; i++) {
+            let leftPlayerDiv = document.createElement('div');
+            leftPlayerDiv.classList.add('player-box', 'left-box');
+            document.querySelector('.left').appendChild(leftPlayerDiv);
+
+            let rightPlayerDiv = document.createElement('div');
+            rightPlayerDiv.classList.add('player-box', 'right-box');
+            document.querySelector('.right').appendChild(rightPlayerDiv);
+        }
+
+        var scoredArray = [];
+        document.getElementById('btn').addEventListener('click', function () {
             var scoreNumber = Math.floor(Math.random() * 100);
-            document.getElementById('displayNumber').innerHTML = scoreNumber;
+            if (isLeft) {
+                scoredArray.push(trimScore(scoreNumber));
+                console.log(scoredArray, 'scoredArray')
+                document.querySelectorAll('.left-box').forEach(ele => {
+                    ele.innerText = scoredArray.reduce((a, b) => a + b);
+                })
+            }
         })
     </script>
 </body>
+
 </html>
